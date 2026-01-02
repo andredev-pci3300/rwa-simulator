@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RWA Simulator | BWB</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Simulador de Tokenização RWA</h1>
+            <p>Analise a viabilidade do seu ativo financeiro ou imobiliário com IA.</p>
+        </header>
+
+        <main>
+            <form id="simulator-form">
+                <div class="input-group">
+                    <label for="asset-type">Tipo de Ativo</label>
+                    <select id="asset-type" required>
+                        <option value="imobiliario">Imobiliário (Aluguel/Venda)</option>
+                        <option value="financeiro">Direito Creditório / Recebível</option>
+                        <option value="agro">Agronegócio</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="asset-value">Valor Total do Ativo (R$)</label>
+                    <input type="number" id="asset-value" placeholder="Ex: 1000000" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="yield">Rentabilidade Anual Estimada (%)</label>
+                    <input type="number" step="0.1" id="yield" placeholder="Ex: 12.5" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="term">Prazo da Operação (Meses)</label>
+                    <input type="number" id="term" placeholder="Ex: 36" required>
+                </div>
+
+                <button type="submit" id="submit-btn">Gerar Análise com IA</button>
+            </form>
+
+            <section id="result-section" class="hidden">
+                <h2>Análise do Especialista IA</h2>
+                <div id="ai-response" class="response-box">
+                    <p>Processando dados...</p>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

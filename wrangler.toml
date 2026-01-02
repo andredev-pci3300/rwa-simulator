@@ -1,0 +1,12 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "rwa-simulator"
+pages_build_output_dir = "./"
+
+# Garante o uso das versões mais recentes das APIs da Cloudflare
+compatibility_date = "2026-01-02"
+
+# Configuração do Banco de Dados D1 para logs e futura captura de leads
+[[d1_databases]]
+binding = "DB"                                # Nome usado dentro do código (context.env.DB)
+database_name = "rwa-db"                      # Nome que você deu ao banco
+database_id = "93f3fd04-8868-4f8d-b62f-bb2d611c29e6"    # O ID único gerado no terminal
