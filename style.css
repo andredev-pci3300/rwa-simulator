@@ -5,10 +5,10 @@ body {
     color: #1e293b;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Essencial para scroll em mobile */
+    align-items: flex-start; /* Permite scroll em telas pequenas */
     min-height: 100vh;
     margin: 0;
-    padding: 20px 15px; /* Reduzi o padding lateral para mobile */
+    padding: 20px 15px; /* Padding reduzido para mobile */
     box-sizing: border-box;
 }
 
@@ -16,11 +16,11 @@ body {
 .container {
     background: #ffffff;
     width: 100%;
-    max-width: 600px; /* Limite em Desktop */
+    max-width: 600px; /* Limite confortável para leitura */
     padding: 32px;
     border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    box-sizing: border-box; /* Garante que padding não estoure a largura */
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
 
 h1 {
@@ -52,11 +52,12 @@ h1 {
     margin-bottom: 20px;
 }
 
+/* Flexbox para alinhar Label e Ícone de Ajuda */
 .label-row {
     display: flex;
     align-items: center;
     margin-bottom: 8px;
-    flex-wrap: wrap; /* Permite quebrar linha se a tela for minúscula */
+    flex-wrap: wrap;
 }
 
 label {
@@ -66,19 +67,19 @@ label {
     margin-right: 8px;
 }
 
-/* INPUTS E SELECTS FLUIDOS */
+/* --- INPUTS E SELECTS FLUIDOS --- */
 input, select {
     width: 100%;
-    padding: 14px; /* Área de toque maior */
+    padding: 14px; /* Área de toque confortável */
     border: 1px solid #cbd5e1;
     border-radius: 8px;
-    font-size: 1rem; /* 16px evita zoom no iOS */
+    font-size: 1rem; /* 16px previne zoom automático no iOS */
     color: #1e293b;
     background-color: #fff;
     box-sizing: border-box;
-    appearance: none; /* Remove estilo padrão do sistema (iOS) */
-    -webkit-appearance: none;
     transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none; /* Remove estilo nativo (iOS/Android) */
+    -webkit-appearance: none;
 }
 
 input:focus, select:focus {
@@ -87,7 +88,7 @@ input:focus, select:focus {
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-/* Correção para seta do Select no iOS/Android */
+/* Seta customizada para Select (funciona melhor em todos navegadores) */
 select {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
     background-position: right 0.5rem center;
@@ -96,7 +97,7 @@ select {
     padding-right: 2.5rem;
 }
 
-/* --- TOOLTIPS (AJUDA) --- */
+/* --- TOOLTIPS (AJUDA INTERATIVA) --- */
 .tooltip-container {
     position: relative;
     display: inline-block;
@@ -114,7 +115,8 @@ select {
     font-size: 0.8rem;
     font-weight: bold;
     cursor: pointer;
-    flex-shrink: 0; /* Impede que o ícone amasse */
+    flex-shrink: 0;
+    transition: background 0.2s, color 0.2s;
 }
 
 .tooltip-icon:hover, .tooltip-container.active .tooltip-icon {
@@ -123,16 +125,16 @@ select {
 }
 
 .tooltip-content {
-    display: none;
+    display: none; /* Oculto por padrão */
     position: absolute;
-    bottom: 135%;
+    bottom: 135%; /* Aparece acima do ícone */
     left: 50%;
     transform: translateX(-50%);
-    width: 240px; /* Largura base */
-    max-width: 80vw; /* Nunca maior que 80% da tela */
-    background-color: #1e293b;
+    width: 260px; /* Largura para caber o exemplo */
+    max-width: 85vw; /* Nunca estoura a tela no mobile */
+    background-color: #1e293b; /* Azul muito escuro */
     color: #fff;
-    padding: 12px;
+    padding: 12px 16px;
     border-radius: 8px;
     font-size: 0.85rem;
     line-height: 1.4;
@@ -141,7 +143,7 @@ select {
     text-align: left;
 }
 
-/* Setinha do balão */
+/* Triângulo do balão */
 .tooltip-content::after {
     content: "";
     position: absolute;
@@ -153,9 +155,19 @@ select {
     border-color: #1e293b transparent transparent transparent;
 }
 
+.tooltip-content p {
+    margin: 0 0 8px 0;
+}
+.tooltip-content p:last-child {
+    margin-bottom: 0;
+}
+.tooltip-content strong {
+    color: #93c5fd; /* Azul claro para destacar "Exemplo" */
+}
+
 .tooltip-container.active .tooltip-content {
     display: block;
-    animation: fadeIn 0.2s;
+    animation: fadeIn 0.2s ease-out;
 }
 
 @keyframes fadeIn {
@@ -166,7 +178,7 @@ select {
 /* --- BOTÃO DE AÇÃO --- */
 button {
     width: 100%;
-    padding: 16px; /* Mais fácil de clicar */
+    padding: 16px;
     background-color: #2563eb;
     color: white;
     border: none;
@@ -176,45 +188,121 @@ button {
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
     margin-top: 10px;
-    -webkit-tap-highlight-color: transparent; /* Remove flash cinza no toque */
+    -webkit-tap-highlight-color: transparent;
 }
 
 button:active {
-    transform: scale(0.98); /* Feedback tátil visual */
+    transform: scale(0.98);
 }
 
-button:hover { background-color: #1d4ed8; }
-button:disabled { background-color: #94a3b8; cursor: not-allowed; transform: none; }
+button:hover {
+    background-color: #1d4ed8;
+}
 
-/* --- RESULTADOS --- */
+button:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* --- RESULTADOS & RELATÓRIO IA --- */
 .hidden { display: none; }
-#result-section { margin-top: 32px; padding-top: 24px; border-top: 1px solid #e2e8f0; }
-h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: #0f172a; }
 
+#result-section {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #e2e8f0;
+}
+
+h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #0f172a;
+}
+
+/* Estilo do Relatório Gerado */
 .ai-content {
     background-color: #f8fafc;
     border-left: 4px solid #2563eb;
-    padding: 20px;
+    padding: 24px;
     border-radius: 4px 8px 8px 4px;
     font-size: 0.95rem;
-    line-height: 1.6;
+    line-height: 1.6; /* Altura de linha confortável */
     color: #334155;
-    word-wrap: break-word; /* Evita que palavras longas quebrem o layout */
+    word-wrap: break-word; /* Evita quebra de layout */
 }
-.ai-content p { margin: 0 0 12px 0; }
-.ai-content ul { margin: 12px 0; padding-left: 20px; }
-.ai-content li { margin-bottom: 8px; }
-.ai-content strong { color: #1e40af; font-weight: 700; }
-.loading { color: #64748b; font-style: italic; text-align: center; padding: 10px; }
 
-/* --- MEDIA QUERIES (RESPONSIVIDADE MÓVEL) --- */
+/* Cabeçalhos do Relatório (h3 vindo da IA) */
+.ai-content h3 {
+    color: #1e3a8a;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-top: 24px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 6px;
+}
+
+.ai-content h3:first-child {
+    margin-top: 0;
+}
+
+/* Parágrafos do Relatório */
+.ai-content p {
+    margin-bottom: 12px;
+    text-align: justify;
+}
+
+/* Listas do Relatório */
+.ai-content ul {
+    margin: 12px 0;
+    padding-left: 20px;
+    background: #fff;
+    padding: 15px 15px 15px 35px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.ai-content li {
+    margin-bottom: 8px;
+    list-style-type: disc;
+}
+.ai-content li:last-child {
+    margin-bottom: 0;
+}
+
+.ai-content strong {
+    color: #0f172a;
+    font-weight: 700;
+}
+
+/* Mensagem de Carregamento */
+.loading {
+    color: #64748b;
+    font-style: italic;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Animação de Entrada do Resultado */
+.fade-in {
+    animation: fadeInResult 0.5s ease-in-out;
+}
+
+@keyframes fadeInResult {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- MEDIA QUERIES (MOBILE) --- */
 @media (max-width: 480px) {
     body {
-        padding: 10px; /* Menos margem no corpo */
+        padding: 10px;
     }
 
     .container {
-        padding: 20px; /* Mais espaço interno para conteúdo */
+        padding: 20px;
         border-radius: 12px;
     }
 
@@ -222,14 +310,15 @@ h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: #0f172a; 
         font-size: 1.3rem;
     }
 
-    /* Ajuste para inputs não ficarem gigantes mas confortáveis */
+    /* Ajuste para inputs */
     input, select {
         padding: 12px;
     }
     
-    /* Tooltips no mobile: Ajuste fino para não sair da tela */
+    /* Ajuste fino dos tooltips no celular */
     .tooltip-content {
-        width: 200px;
-        font-size: 0.8rem;
+        width: 220px;
+        left: 50%; 
+        /* Mantém centralizado mas limitado pelo max-width global */
     }
 }
