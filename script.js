@@ -5,20 +5,31 @@ document.getElementById('simulator-form').addEventListener('submit', async funct
     const responseBox = document.getElementById('ai-response');
     const resultSection = document.getElementById('result-section');
 
+    // 1. CAPTURA E CONVERSÃO DE DADOS
+    // Convertemos explicitamente para garantir que o banco D1 receba o tipo correto
+    const assetType = document.getElementById('asset-type').value;
+    const assetValue = parseFloat(document.getElementById('asset-value').value);
+    const assetYield = parseFloat(document.getElementById('yield').value);
+    const assetTerm = parseInt(document.getElementById('term').value);
+
+    // 2. CAMADA DE VALIDAÇÃO LÓGICA
+    // Verifica se os valores são números reais e positivos
+    if (isNaN(assetValue) || assetValue <= 0 || isNaN(assetYield) || isNaN(assetTerm) || assetTerm <= 0) {
+        alert("Por favor, preencha todos os campos com valores numéricos positivos.");
+        return; 
+    }
+
     const data = {
-        type: document.getElementById('asset-type').value,
-        value: document.getElementById('asset-value').value,
-        yield: document.getElementById('yield').value,
-        term: document.getElementById('term').value
+        type: assetType,
+        value: assetValue,
+        yield: assetYield,
+        term: assetTerm
     };
 
-    // 1. ESTADO DE CARREGAMENTO (White-label)
+    // 3. ESTADO DE CARREGAMENTO (White-label)
     btn.disabled = true;
-    btn.innerText = "Por favor, aguarde..."; // Label solicitada
-    
+    btn.innerText = "Por favor, aguarde...";
     resultSection.classList.remove('hidden');
-    
-    // Mensagem alterada para remover a menção ao Gemini
     responseBox.innerHTML = '<p class="loading">Processando viabilidade com nossa inteligência artificial...</p>';
 
     try {
@@ -32,6 +43,7 @@ document.getElementById('simulator-form').addEventListener('submit', async funct
 
         if (response.ok) {
             // Formatação do Markdown para HTML (Negritos e Quebras de linha)
+            // Preparado para a saída robusta do Gemini 2.5 Flash
             const formattedText = result.analysis
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\n/g, '<br>');
@@ -42,9 +54,9 @@ document.getElementById('simulator-form').addEventListener('submit', async funct
         }
 
     } catch (error) {
-        responseBox.innerHTML = `<p style="color: #e11d48;">Falha na conexão com o servidor de análise.</p>`;
+        responseBox.innerHTML = `<p style="color: #e11d48;">Falha na comunicação com o servidor.</p>`;
     } finally {
-        // 2. RESTAURAÇÃO DO BOTÃO
+        // 4. RESTAURAÇÃO DO BOTÃO
         btn.disabled = false;
         btn.innerText = "Gerar Análise com IA";
     }
