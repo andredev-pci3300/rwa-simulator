@@ -5,17 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BWB RWA Validator</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <h1>BWB RWA Validator</h1>
-        <p style="text-align: center; color: #64748b; margin-bottom: 25px;">
+        <p class="subtitle">
             Inteligência Artificial para Estruturação e Validação de Teses
         </p>
         
         <form id="simulator-form">
             <div class="form-group">
-                <label for="asset-type">Setor do Ativo</label>
+                <div class="label-row">
+                    <label for="asset-type">Setor do Ativo</label>
+                    <div class="tooltip-container">
+                        <span class="tooltip-icon">?</span>
+                        <div class="tooltip-content">
+                            <p><strong>O que é:</strong> O segmento de mercado onde o projeto atua.</p>
+                            <p><strong>Exemplo:</strong> Imobiliário (Prédios), Agro (Plantações) ou Energia.</p>
+                        </div>
+                    </div>
+                </div>
                 <select id="asset-type" required>
                     <option value="Imobiliário">Imobiliário (Real Estate)</option>
                     <option value="Agronegócio">Agronegócio (Agro)</option>
@@ -26,24 +36,60 @@
             </div>
 
             <div class="form-group">
-                <label for="asset-value">Valuation / Valor Alvo (R$)</label>
+                <div class="label-row">
+                    <label for="asset-value">Valuation / Valor Alvo (R$)</label>
+                    <div class="tooltip-container">
+                        <span class="tooltip-icon">?</span>
+                        <div class="tooltip-content">
+                            <p><strong>O que é:</strong> O valor total do ativo ou o montante que se deseja captar via tokenização.</p>
+                            <p><strong>Exemplo:</strong> R$ 5.000.000,00.</p>
+                        </div>
+                    </div>
+                </div>
                 <input type="number" id="asset-value" placeholder="Ex: 5000000" step="0.01" min="1" required>
             </div>
 
             <div class="form-group">
-                <label for="yield">Yield Projetado (% ao ano)</label>
+                <div class="label-row">
+                    <label for="yield">Yield Projetado (% ao ano)</label>
+                    <div class="tooltip-container">
+                        <span class="tooltip-icon">?</span>
+                        <div class="tooltip-content">
+                            <p><strong>O que é:</strong> A taxa de retorno (lucro) anual estimada para o investidor.</p>
+                            <p><strong>Exemplo:</strong> 18% a.a. (muito acima da Poupança/CDI).</p>
+                        </div>
+                    </div>
+                </div>
                 <input type="number" id="yield" placeholder="Ex: 18.5" step="0.1" min="0" required>
             </div>
 
             <div class="form-group">
-                <label for="term">Prazo da Operação (meses)</label>
+                <div class="label-row">
+                    <label for="term">Prazo da Operação (meses)</label>
+                    <div class="tooltip-container">
+                        <span class="tooltip-icon">?</span>
+                        <div class="tooltip-content">
+                            <p><strong>O que é:</strong> O tempo até o investidor receber seu capital de volta acrescido dos juros.</p>
+                            <p><strong>Exemplo:</strong> 36 meses (3 anos).</p>
+                        </div>
+                    </div>
+                </div>
                 <input type="number" id="term" placeholder="Ex: 36" min="1" required>
             </div>
 
-            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 25px 0;">
+            <hr class="divider">
             
             <div class="form-group">
-                <label for="project-stage">Maturidade do Projeto (Risco de Execução)</label>
+                <div class="label-row">
+                    <label for="project-stage">Maturidade do Projeto</label>
+                    <div class="tooltip-container">
+                        <span class="tooltip-icon">?</span>
+                        <div class="tooltip-content">
+                            <p><strong>O que é:</strong> O estágio atual de desenvolvimento. Impacta diretamente no risco.</p>
+                            <p><strong>Exemplo:</strong> "Performado" (Já existe e gera renda) é mais seguro que "Greenfield" (Só no papel).</p>
+                        </div>
+                    </div>
+                </div>
                 <select id="project-stage" required>
                     <option value="Greenfield">Greenfield (Ideia/Planta/Desenvolvimento)</option>
                     <option value="Brownfield">Brownfield (Em Construção/Expansão)</option>
@@ -52,7 +98,16 @@
             </div>
 
             <div class="form-group">
-                <label for="collateral">Garantia (Colateral)</label>
+                <div class="label-row">
+                    <label for="collateral">Garantia (Colateral)</label>
+                    <div class="tooltip-container">
+                        <span class="tooltip-icon">?</span>
+                        <div class="tooltip-content">
+                            <p><strong>O que é:</strong> O ativo físico ou jurídico que garante o pagamento em caso de falha.</p>
+                            <p><strong>Exemplo:</strong> Alienação Fiduciária do próprio imóvel.</p>
+                        </div>
+                    </div>
+                </div>
                 <select id="collateral" required>
                     <option value="Imóvel com Alienação">Imóvel/Terreno (Alienação Fiduciária)</option>
                     <option value="Recebíveis Travados">Recebíveis/Contratos (Cessão Fiduciária)</option>
@@ -62,7 +117,16 @@
             </div>
 
             <div class="form-group">
-                <label for="use-of-proceeds">Destinação dos Recursos (Use of Proceeds)</label>
+                <div class="label-row">
+                    <label for="use-of-proceeds">Destinação dos Recursos</label>
+                    <div class="tooltip-container">
+                        <span class="tooltip-icon">?</span>
+                        <div class="tooltip-content">
+                            <p><strong>O que é:</strong> Como o dinheiro captado será utilizado pela empresa.</p>
+                            <p><strong>Exemplo:</strong> "Expansão" (Crescimento) é visto melhor que "Pagar Dívidas".</p>
+                        </div>
+                    </div>
+                </div>
                 <select id="use-of-proceeds" required>
                     <option value="Expansão/Capex">Expansão de Operação (Capex)</option>
                     <option value="Capital de Giro">Capital de Giro (Opex)</option>
