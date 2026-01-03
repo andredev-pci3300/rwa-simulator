@@ -5,17 +5,20 @@ document.getElementById('simulator-form').addEventListener('submit', async funct
     const responseBox = document.getElementById('ai-response');
     const resultSection = document.getElementById('result-section');
 
-    // 1. CAPTURA E CONVERSÃO DE DADOS
-    // Convertemos explicitamente para garantir que o banco D1 receba o tipo correto
+    // 1. CAPTURA DOS DADOS (Quantitativos + Qualitativos)
     const assetType = document.getElementById('asset-type').value;
     const assetValue = parseFloat(document.getElementById('asset-value').value);
     const assetYield = parseFloat(document.getElementById('yield').value);
     const assetTerm = parseInt(document.getElementById('term').value);
+    
+    // Novos campos estratégicos
+    const projectStage = document.getElementById('project-stage').value;
+    const collateral = document.getElementById('collateral').value;
+    const useOfProceeds = document.getElementById('use-of-proceeds').value;
 
-    // 2. CAMADA DE VALIDAÇÃO LÓGICA
-    // Verifica se os valores são números reais e positivos
+    // 2. VALIDAÇÃO DE SEGURANÇA
     if (isNaN(assetValue) || assetValue <= 0 || isNaN(assetYield) || isNaN(assetTerm) || assetTerm <= 0) {
-        alert("Por favor, preencha todos os campos com valores numéricos positivos.");
+        alert("Atenção: Para uma validação precisa, insira apenas valores numéricos positivos nos campos financeiros.");
         return; 
     }
 
@@ -23,14 +26,23 @@ document.getElementById('simulator-form').addEventListener('submit', async funct
         type: assetType,
         value: assetValue,
         yield: assetYield,
-        term: assetTerm
+        term: assetTerm,
+        // Enviando os novos dados para o backend
+        stage: projectStage,
+        collateral: collateral,
+        useOfProceeds: useOfProceeds
     };
 
-    // 3. ESTADO DE CARREGAMENTO (White-label)
+    // 3. UX "PROFISSIONAL"
     btn.disabled = true;
-    btn.innerText = "Por favor, aguarde...";
+    btn.innerText = "Validando Tese...";
     resultSection.classList.remove('hidden');
-    responseBox.innerHTML = '<p class="loading">Processando viabilidade com nossa inteligência artificial...</p>';
+    
+    // Mensagem de loading alinhada com a marca "Validator"
+    responseBox.innerHTML = `
+        <p class="loading">
+            O Comitê de IA da BWB está analisando a estrutura de risco, as garantias e a viabilidade econômica do ativo...
+        </p>`;
 
     try {
         const response = await fetch('/analyze', {
@@ -42,22 +54,20 @@ document.getElementById('simulator-form').addEventListener('submit', async funct
         const result = await response.json();
 
         if (response.ok) {
-            // Formatação do Markdown para HTML (Negritos e Quebras de linha)
-            // Preparado para a saída robusta do Gemini 2.5 Flash
+            // Formatação inteligente
             const formattedText = result.analysis
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\n/g, '<br>');
             
             responseBox.innerHTML = `<div class="ai-content">${formattedText}</div>`;
         } else {
-            responseBox.innerHTML = `<p style="color: #e11d48;">Erro: ${result.error}</p>`;
+            responseBox.innerHTML = `<p style="color: #e11d48;">Erro na Validação: ${result.error}</p>`;
         }
 
     } catch (error) {
-        responseBox.innerHTML = `<p style="color: #e11d48;">Falha na comunicação com o servidor.</p>`;
+        responseBox.innerHTML = `<p style="color: #e11d48;">Falha de conexão com o servidor de validação.</p>`;
     } finally {
-        // 4. RESTAURAÇÃO DO BOTÃO
         btn.disabled = false;
-        btn.innerText = "Gerar Análise com IA";
+        btn.innerText = "Validar Nova Tese";
     }
 });
