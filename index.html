@@ -3,53 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RWA Simulator | BWB</title>
+    <title>BWB RWA Validator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Simulador de Tokenização RWA</h1>
-            <p>Analise a viabilidade do seu ativo financeiro ou imobiliário com IA.</p>
-        </header>
+        <h1>BWB RWA Validator</h1>
+        <p style="text-align: center; color: #64748b; margin-bottom: 25px;">
+            Inteligência Artificial para Estruturação e Validação de Teses
+        </p>
+        
+        <form id="simulator-form">
+            <div class="form-group">
+                <label for="asset-type">Setor do Ativo</label>
+                <select id="asset-type" required>
+                    <option value="Imobiliário">Imobiliário (Real Estate)</option>
+                    <option value="Agronegócio">Agronegócio (Agro)</option>
+                    <option value="Recebíveis">Recebíveis Comerciais</option>
+                    <option value="Energia">Energia Renovável</option>
+                    <option value="Distressed">Distressed (Ativos Judiciais)</option>
+                </select>
+            </div>
 
-        <main>
-            <form id="simulator-form">
-                <div class="input-group">
-                    <label for="asset-type">Tipo de Ativo</label>
-                    <select id="asset-type" required>
-                        <option value="imobiliario">Imobiliário (Aluguel/Venda)</option>
-                        <option value="financeiro">Direito Creditório / Recebível</option>
-                        <option value="agro">Agronegócio</option>
-                    </select>
-                </div>
+            <div class="form-group">
+                <label for="asset-value">Valuation / Valor Alvo (R$)</label>
+                <input type="number" id="asset-value" placeholder="Ex: 5000000" step="0.01" min="1" required>
+            </div>
 
-                <div class="input-group">
-                    <label for="asset-value">Valor Total do Ativo (R$)</label>
-                    <input type="number" id="asset-value" placeholder="Ex: 1000000" required>
-                </div>
+            <div class="form-group">
+                <label for="yield">Yield Projetado (% ao ano)</label>
+                <input type="number" id="yield" placeholder="Ex: 18.5" step="0.1" min="0" required>
+            </div>
 
-                <div class="input-group">
-                    <label for="yield">Rentabilidade Anual Estimada (%)</label>
-                    <input type="number" step="0.1" id="yield" placeholder="Ex: 12.5" required>
-                </div>
+            <div class="form-group">
+                <label for="term">Prazo da Operação (meses)</label>
+                <input type="number" id="term" placeholder="Ex: 36" min="1" required>
+            </div>
 
-                <div class="input-group">
-                    <label for="term">Prazo da Operação (Meses)</label>
-                    <input type="number" id="term" placeholder="Ex: 36" required>
-                </div>
+            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 25px 0;">
+            
+            <div class="form-group">
+                <label for="project-stage">Maturidade do Projeto (Risco de Execução)</label>
+                <select id="project-stage" required>
+                    <option value="Greenfield">Greenfield (Ideia/Planta/Desenvolvimento)</option>
+                    <option value="Brownfield">Brownfield (Em Construção/Expansão)</option>
+                    <option value="Performado">Performado (Já gera renda/Pronto)</option>
+                </select>
+            </div>
 
-                <button type="submit" id="submit-btn">Gerar Análise com IA</button>
-            </form>
+            <div class="form-group">
+                <label for="collateral">Garantia (Colateral)</label>
+                <select id="collateral" required>
+                    <option value="Imóvel com Alienação">Imóvel/Terreno (Alienação Fiduciária)</option>
+                    <option value="Recebíveis Travados">Recebíveis/Contratos (Cessão Fiduciária)</option>
+                    <option value="Aval Corporativo">Aval Corporativo/Nota Promissória</option>
+                    <option value="Clean/Sem Garantia">Clean (Sem Garantia Real)</option>
+                </select>
+            </div>
 
-            <section id="result-section" class="hidden">
-                <h2>Análise do Especialista IA</h2>
-                <div id="ai-response" class="response-box">
-                    <p>Processando dados...</p>
-                </div>
-            </section>
-        </main>
+            <div class="form-group">
+                <label for="use-of-proceeds">Destinação dos Recursos (Use of Proceeds)</label>
+                <select id="use-of-proceeds" required>
+                    <option value="Expansão/Capex">Expansão de Operação (Capex)</option>
+                    <option value="Capital de Giro">Capital de Giro (Opex)</option>
+                    <option value="Liquidez/Cash-out">Liquidez para Sócios (Cash-out)</option>
+                    <option value="Refinanciamento">Pagamento de Dívidas (Refinanciamento)</option>
+                </select>
+            </div>
+
+            <button type="submit" id="submit-btn">Validar Tese com IA</button>
+        </form>
+
+        <div id="result-section" class="hidden">
+            <h2>Parecer do Comitê BWB</h2>
+            <div id="ai-response"></div>
+        </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
