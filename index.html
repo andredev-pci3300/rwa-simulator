@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BWB RWA Validator</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -18,7 +19,10 @@
                     <label for="asset-type">Setor do Ativo</label>
                     <div class="tooltip-container">
                         <span class="tooltip-icon">?</span>
-                        <div class="tooltip-content">O segmento de mercado onde o projeto atua.</div>
+                        <div class="tooltip-content">
+                            <p>O segmento de mercado onde o projeto atua.</p>
+                            <p><strong>Exemplo Prático:</strong> Escolha "Imobiliário" para um prédio residencial ou "Agronegócio" para financiar uma safra de soja.</p>
+                        </div>
                     </div>
                 </div>
                 <select id="asset-type" required>
@@ -36,7 +40,10 @@
                     <label for="asset-value">Valuation / Valor Alvo (R$)</label>
                     <div class="tooltip-container">
                         <span class="tooltip-icon">?</span>
-                        <div class="tooltip-content">Valor total do ativo. Apenas números positivos.</div>
+                        <div class="tooltip-content">
+                            <p>O montante total que se deseja captar via tokenização.</p>
+                            <p><strong>Exemplo Prático:</strong> Se você precisa de R$ 5 milhões para construir um condomínio, insira 5000000.</p>
+                        </div>
                     </div>
                 </div>
                 <input type="number" id="asset-value" placeholder="Ex: 5000000" step="0.01" min="1" required>
@@ -47,7 +54,10 @@
                     <label for="yield">Yield Projetado (% ao ano)</label>
                     <div class="tooltip-container">
                         <span class="tooltip-icon">?</span>
-                        <div class="tooltip-content">Rentabilidade anual esperada.</div>
+                        <div class="tooltip-content">
+                            <p>O lucro anual prometido ao investidor.</p>
+                            <p><strong>Exemplo Prático:</strong> Se a Poupança paga 6% e você oferece 18% para atrair capital, digite 18.</p>
+                        </div>
                     </div>
                 </div>
                 <input type="number" id="yield" placeholder="Ex: 18.5" step="0.1" min="0" required>
@@ -58,7 +68,10 @@
                     <label for="term">Prazo da Operação (meses)</label>
                     <div class="tooltip-container">
                         <span class="tooltip-icon">?</span>
-                        <div class="tooltip-content">Duração do contrato em meses.</div>
+                        <div class="tooltip-content">
+                            <p>Tempo total até a devolução do dinheiro ao investidor.</p>
+                            <p><strong>Exemplo Prático:</strong> 36 meses (3 anos) é um prazo comum para obras imobiliárias.</p>
+                        </div>
                     </div>
                 </div>
                 <input type="number" id="term" placeholder="Ex: 36" min="1" required oninput="this.value = Math.round(this.value);">
@@ -67,17 +80,35 @@
             <hr class="divider">
             
             <div class="form-group">
-                <label for="project-stage">Maturidade do Projeto</label>
+                <div class="label-row">
+                    <label for="project-stage">Maturidade do Projeto</label>
+                    <div class="tooltip-container">
+                        <span class="tooltip-icon">?</span>
+                        <div class="tooltip-content">
+                            <p>O estágio atual de risco da operação.</p>
+                            <p><strong>Exemplo Prático:</strong> "Performado" (Prédio pronto com inquilinos) é muito mais seguro que "Greenfield" (Apenas o terreno).</p>
+                        </div>
+                    </div>
+                </div>
                 <select id="project-stage" required>
                     <option value="" disabled selected>Selecione a maturidade...</option>
-                    <option value="Greenfield">Greenfield</option>
-                    <option value="Brownfield">Brownfield</option>
-                    <option value="Performado">Performado</option>
+                    <option value="Greenfield">Greenfield (Ideia/Planta)</option>
+                    <option value="Brownfield">Brownfield (Em Construção)</option>
+                    <option value="Performado">Performado (Já gera renda)</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="collateral">Garantia (Colateral)</label>
+                <div class="label-row">
+                    <label for="collateral">Garantia (Colateral)</label>
+                    <div class="tooltip-container">
+                        <span class="tooltip-icon">?</span>
+                        <div class="tooltip-content">
+                            <p>O ativo que cobre o prejuízo em caso de calote.</p>
+                            <p><strong>Exemplo Prático:</strong> "Imóvel com Alienação" significa que, se não pagar, o investidor fica com o imóvel.</p>
+                        </div>
+                    </div>
+                </div>
                 <select id="collateral" required>
                     <option value="" disabled selected>Selecione a garantia...</option>
                     <option value="Imóvel com Alienação">Imóvel (Alienação Fiduciária)</option>
@@ -88,7 +119,16 @@
             </div>
 
             <div class="form-group">
-                <label for="use-of-proceeds">Destinação dos Recursos</label>
+                <div class="label-row">
+                    <label for="use-of-proceeds">Destinação dos Recursos</label>
+                    <div class="tooltip-container">
+                        <span class="tooltip-icon">?</span>
+                        <div class="tooltip-content">
+                            <p>Para onde vai o dinheiro captado.</p>
+                            <p><strong>Exemplo Prático:</strong> Investidores preferem financiar "Expansão" (comprar máquinas novas) do que "Pagar Dívidas".</p>
+                        </div>
+                    </div>
+                </div>
                 <select id="use-of-proceeds" required>
                     <option value="" disabled selected>Selecione o destino...</option>
                     <option value="Expansão/Capex">Expansão de Operação</option>
@@ -106,6 +146,7 @@
             <div id="ai-response"></div>
         </div>
     </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
