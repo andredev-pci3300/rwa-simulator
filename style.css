@@ -222,18 +222,25 @@ h2 {
 }
 
 /* Estilo do Relatório Gerado */
+/* ... MANTENHA O CSS ATÉ A LINHA .ai-content ... */
+
 .ai-content {
     background-color: #f8fafc;
     border-left: 4px solid #2563eb;
     padding: 24px;
     border-radius: 4px 8px 8px 4px;
     font-size: 0.95rem;
-    line-height: 1.6; /* Altura de linha confortável */
+    line-height: 1.6;
     color: #334155;
-    word-wrap: break-word; /* Evita quebra de layout */
+    word-wrap: break-word;
 }
 
-/* Cabeçalhos do Relatório (h3 vindo da IA) */
+/* Remove margens extras do container gerado pela IA */
+.ai-content .report-container {
+    margin: 0;
+    padding: 0;
+}
+
 .ai-content h3 {
     color: #1e3a8a;
     font-size: 1.1rem;
@@ -248,13 +255,22 @@ h2 {
     margin-top: 0;
 }
 
-/* Parágrafos do Relatório */
 .ai-content p {
     margin-bottom: 12px;
     text-align: justify;
 }
 
-/* Listas do Relatório */
+/* Destaque para o Veredito */
+.ai-content .verdict {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #0f172a;
+    background-color: #e2e8f0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
 .ai-content ul {
     margin: 12px 0;
     padding-left: 20px;
@@ -268,14 +284,13 @@ h2 {
     margin-bottom: 8px;
     list-style-type: disc;
 }
-.ai-content li:last-child {
-    margin-bottom: 0;
-}
 
 .ai-content strong {
-    color: #0f172a;
+    color: #1e40af;
     font-weight: 700;
 }
+
+/* ... MANTENHA AS MEDIA QUERIES ... */
 
 /* Mensagem de Carregamento */
 .loading {

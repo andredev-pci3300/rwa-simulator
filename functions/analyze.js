@@ -3,7 +3,6 @@ export async function onRequestPost(context) {
 
     try {
         const data = await request.json();
-        // Desestruturando os novos campos
         const { type, value, yield: assetYield, term, stage, collateral, useOfProceeds } = data;
 
         if (!env.GEMINI_API_KEY) {
@@ -12,29 +11,39 @@ export async function onRequestPost(context) {
 
         const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`;
         
-        // --- O PROMPT MESTRE DA BWB ---
+        // PROMPT RIGOROSO
         const prompt = `
-        Atue como o **Head de Estruturação e Risco da BWB (Blockchain Real World Assets)**. 
-        Sua missão é validar a viabilidade de tokenização deste ativo com rigor institucional.
+        Aja como um sistema gerador de relatórios HTML (Backend API).
+        NÃO CONVERSE. NÃO DÊ BOM DIA. NÃO USE MARKDOWN.
         
-        DADOS DA OPERAÇÃO:
-        - Ativo/Setor: ${type}
+        Sua tarefa é gerar um relatório HTML puro sobre este ativo RWA:
+        - Setor: ${type}
         - Valuation: R$ ${value}
-        - Yield Oferta: ${assetYield}% a.a.
+        - Yield: ${assetYield}% a.a.
         - Prazo: ${term} meses
-        - Maturidade do Projeto: ${stage}
-        - Garantia (Colateral): ${collateral}
-        - Destinação dos Recursos: ${useOfProceeds}
+        - Estágio: ${stage}
+        - Garantia: ${collateral}
+        - Destino: ${useOfProceeds}
 
-        DIRETRIZES DE ANÁLISE (Output em HTML):
-        1. **BWB Score (0-100):** Dê uma nota de viabilidade baseada no trinômio Risco-Retorno-Garantia.
-        2. **Análise de Estruturação:**
-           - O Yield de ${assetYield}% é sustentável para um projeto ${stage}?
-           - A garantia (${collateral}) cobre o risco de default? Seja crítico.
-           - O uso de recursos para ${useOfProceeds} gera valor ou apenas cobre buracos?
-        3. **Veredito Final:** "APROVADO PARA ESTRUTURAÇÃO", "APROVADO COM RESSALVAS" ou "REPROVADO".
+        ESTRUTURA OBRIGATÓRIA (HTML PURO):
+        Comece IMEDIATAMENTE com <div class="report-container">.
         
-        Formatação: Use <strong> para destaques, <ul> para listas e parágrafos curtos. Seja direto, técnico e executivo.
+        <div class="report-container">
+            <h3>1. BWB Score (0-100)</h3>
+            <p>[Sua nota e análise breve]</p>
+
+            <h3>2. Análise de Estruturação</h3>
+            <p><strong>Sustentabilidade do Yield:</strong> [Análise]</p>
+            <p><strong>Robustez da Garantia:</strong> [Análise crítica]</p>
+            <p><strong>Uso dos Recursos:</strong> [Análise]</p>
+
+            <h3>3. Veredito Final</h3>
+            <p class="verdict">[APROVADO / RESSALVAS / REPROVADO]</p>
+            <ul>
+                <li>[Recomendação 1]</li>
+                <li>[Recomendação 2]</li>
+            </ul>
+        </div>
         `;
 
         const response = await fetch(url, {
@@ -46,26 +55,37 @@ export async function onRequestPost(context) {
         const result = await response.json();
         if (result.error) throw new Error(result.error.message);
 
-        const aiText = result.candidates[0].content.parts[0].text;
+        let aiText = result.candidates[0].content.parts[0].text;
 
-        // Persistência no D1 com as novas colunas
+        // --- LIMPEZA CIRÚRGICA DE DADOS ---
+        // 1. Remove blocos de código markdown (```html e ```)
+        aiText = aiText.replace(/```html/g, '').replace(/```/g, '');
+        
+        // 2. Remove qualquer texto introdutório antes da primeira tag HTML
+        // Procura onde começa o primeiro "<" e joga fora o que tem antes
+        const firstTagIndex = aiText.indexOf('<');
+        if (firstTagIndex !== -1) {
+            aiText = aiText.substring(firstTagIndex);
+        }
+
+        // Gravação no Banco (Mantida)
         try {
             await env.DB.prepare(
                 `INSERT INTO simulations (type, value, yield, term, project_stage, collateral, use_of_proceeds, analysis) 
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
             ).bind(type, value, assetYield, term, stage, collateral, useOfProceeds, aiText).run();
         } catch (dbError) {
-            console.error("Erro ao gravar no D1:", dbError.message);
+            console.error("Erro D1:", dbError.message);
         }
 
         return new Response(JSON.stringify({ analysis: aiText }), {
-            headers: { "Content-Type": "application/json" }
+            headers: { "Content-Type": "application/json; charset=utf-8" }
         });
 
     } catch (error) {
         return new Response(JSON.stringify({ error: error.message }), {
             status: 500,
-            headers: { "Content-Type": "application/json" }
+            headers: { "Content-Type": "application/json; charset=utf-8" }
         });
     }
 }

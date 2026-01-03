@@ -1,25 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('simulator-form');
-    
-    // 1. FILTRO DE CARACTERES INVÁLIDOS (Prevenção em tempo real)
+    // --- Lógica de Proteção de Inputs ---
     const numericInputs = document.querySelectorAll('input[type="number"]');
     numericInputs.forEach(input => {
         input.addEventListener('keydown', function(e) {
-            // Bloqueia 'e', '+', '-' que são permitidos por padrão em inputs numéricos
             if (['e', 'E', '+', '-'].includes(e.key)) {
                 e.preventDefault();
             }
         });
     });
 
-    form.addEventListener('submit', async function(e) {
+    // --- Lógica de Envio do Formulário ---
+    document.getElementById('simulator-form').addEventListener('submit', async function(e) {
         e.preventDefault();
 
         const btn = document.getElementById('submit-btn');
         const responseBox = document.getElementById('ai-response');
         const resultSection = document.getElementById('result-section');
 
-        // Captura de valores
         const data = {
             type: document.getElementById('asset-type').value,
             value: parseFloat(document.getElementById('asset-value').value),
@@ -30,13 +27,14 @@ document.addEventListener('DOMContentLoaded', function() {
             useOfProceeds: document.getElementById('use-of-proceeds').value
         };
 
-        // 2. VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS E VALORES REAIS
+        // Validação
         if (!data.type || !data.stage || !data.collateral || !data.useOfProceeds || 
             isNaN(data.value) || data.value <= 0 || isNaN(data.yield) || isNaN(data.term)) {
-            alert("Erro: Todos os campos são obrigatórios e devem conter valores válidos e positivos.");
+            alert("Erro: Todos os campos são obrigatórios e devem conter valores válidos.");
             return;
         }
 
+        // Estado de Carregamento
         btn.disabled = true;
         btn.innerText = "Validando Tese...";
         resultSection.classList.remove('hidden');
@@ -52,13 +50,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
 
             if (response.ok) {
-                const formattedText = result.analysis
-                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                    .replace(/\n/g, '<br>');
-                responseBox.innerHTML = `<div class="ai-content">${formattedText}</div>`;
+                // CORREÇÃO: Não usamos mais replace. O HTML vem pronto do backend.
+                responseBox.innerHTML = `<div class="ai-content fade-in">${result.analysis}</div>`;
             } else {
                 responseBox.innerHTML = `<p style="color: #e11d48;">Erro: ${result.error}</p>`;
             }
+
         } catch (error) {
             responseBox.innerHTML = `<p style="color: #e11d48;">Falha na conexão com o validador.</p>`;
         } finally {
@@ -67,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Lógica dos Tooltips (Mantida)
+    // --- Tooltips ---
     const tooltipIcons = document.querySelectorAll('.tooltip-icon');
     tooltipIcons.forEach(icon => {
         icon.addEventListener('click', function(e) {
