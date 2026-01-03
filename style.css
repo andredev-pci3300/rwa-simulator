@@ -1,41 +1,44 @@
-/* Configurações Gerais e Tipografia */
+/* --- CONFIGURAÇÕES GERAIS E TIPOGRAFIA --- */
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background-color: #f1f5f9;
     color: #1e293b;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Melhor para telas longas */
+    align-items: flex-start; /* Essencial para scroll em mobile */
     min-height: 100vh;
     margin: 0;
-    padding: 40px 20px;
+    padding: 20px 15px; /* Reduzi o padding lateral para mobile */
     box-sizing: border-box;
 }
 
-/* Container Principal */
+/* --- CONTAINER PRINCIPAL --- */
 .container {
     background: #ffffff;
     width: 100%;
-    max-width: 600px;
+    max-width: 600px; /* Limite em Desktop */
     padding: 32px;
     border-radius: 16px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box; /* Garante que padding não estoure a largura */
 }
 
 h1 {
     font-size: 1.5rem;
     font-weight: 700;
     text-align: center;
-    margin-bottom: 8px; /* Reduzi para aproximar do subtítulo */
+    margin-bottom: 8px;
     color: #0f172a;
     letter-spacing: -0.025em;
+    line-height: 1.2;
 }
 
 .subtitle {
     text-align: center;
     color: #64748b;
-    margin-bottom: 32px;
+    margin-bottom: 25px;
     font-size: 0.95rem;
+    line-height: 1.5;
 }
 
 .divider {
@@ -44,34 +47,37 @@ h1 {
     margin: 25px 0;
 }
 
-/* Formulário e Labels */
+/* --- FORMULÁRIO --- */
 .form-group {
     margin-bottom: 20px;
 }
 
-/* Flexbox para alinhar Label e Ícone */
 .label-row {
     display: flex;
     align-items: center;
     margin-bottom: 8px;
+    flex-wrap: wrap; /* Permite quebrar linha se a tela for minúscula */
 }
 
 label {
     font-size: 0.9rem;
     font-weight: 600;
     color: #475569;
-    margin-right: 8px; /* Espaço entre texto e ícone */
+    margin-right: 8px;
 }
 
+/* INPUTS E SELECTS FLUIDOS */
 input, select {
     width: 100%;
-    padding: 12px;
+    padding: 14px; /* Área de toque maior */
     border: 1px solid #cbd5e1;
     border-radius: 8px;
-    font-size: 1rem;
+    font-size: 1rem; /* 16px evita zoom no iOS */
     color: #1e293b;
     background-color: #fff;
-    box-sizing: border-box; /* Garante que padding não estoure a largura */
+    box-sizing: border-box;
+    appearance: none; /* Remove estilo padrão do sistema (iOS) */
+    -webkit-appearance: none;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -81,25 +87,34 @@ input:focus, select:focus {
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-/* --- ESTILO DOS TOOLTIPS (Ajuda) --- */
+/* Correção para seta do Select no iOS/Android */
+select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+/* --- TOOLTIPS (AJUDA) --- */
 .tooltip-container {
-    position: relative; /* Necessário para posicionar o balão */
+    position: relative;
     display: inline-block;
 }
 
 .tooltip-icon {
     background-color: #e2e8f0;
     color: #64748b;
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.2s, color 0.2s;
+    flex-shrink: 0; /* Impede que o ícone amasse */
 }
 
 .tooltip-icon:hover, .tooltip-container.active .tooltip-icon {
@@ -108,20 +123,21 @@ input:focus, select:focus {
 }
 
 .tooltip-content {
-    display: none; /* Escondido por padrão */
+    display: none;
     position: absolute;
-    bottom: 125%; /* Aparece acima do ícone */
+    bottom: 135%;
     left: 50%;
     transform: translateX(-50%);
-    width: 220px;
-    background-color: #1e293b; /* Azul escuro quase preto */
+    width: 240px; /* Largura base */
+    max-width: 80vw; /* Nunca maior que 80% da tela */
+    background-color: #1e293b;
     color: #fff;
     padding: 12px;
     border-radius: 8px;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     line-height: 1.4;
     z-index: 100;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
     text-align: left;
 }
 
@@ -129,7 +145,7 @@ input:focus, select:focus {
 .tooltip-content::after {
     content: "";
     position: absolute;
-    top: 100%; /* Embaixo do balão */
+    top: 100%;
     left: 50%;
     margin-left: -5px;
     border-width: 5px;
@@ -137,31 +153,20 @@ input:focus, select:focus {
     border-color: #1e293b transparent transparent transparent;
 }
 
-.tooltip-content p {
-    margin: 0 0 6px 0;
-}
-.tooltip-content p:last-child {
-    margin-bottom: 0;
-}
-.tooltip-content strong {
-    color: #93c5fd; /* Azul claro para destaque */
-}
-
-/* Classe para mostrar o balão via JS */
 .tooltip-container.active .tooltip-content {
     display: block;
-    animation: fadeIn 0.2s ease-in-out;
+    animation: fadeIn 0.2s;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translate(-50%, 5px); }
+    from { opacity: 0; transform: translate(-50%, 10px); }
     to { opacity: 1; transform: translate(-50%, 0); }
 }
 
-/* Botão de Ação */
+/* --- BOTÃO DE AÇÃO --- */
 button {
     width: 100%;
-    padding: 14px;
+    padding: 16px; /* Mais fácil de clicar */
     background-color: #2563eb;
     color: white;
     border: none;
@@ -169,45 +174,62 @@ button {
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, transform 0.1s;
     margin-top: 10px;
+    -webkit-tap-highlight-color: transparent; /* Remove flash cinza no toque */
 }
 
-button:hover {
-    background-color: #1d4ed8;
+button:active {
+    transform: scale(0.98); /* Feedback tátil visual */
 }
 
-button:disabled {
-    background-color: #94a3b8;
-    cursor: not-allowed;
-}
+button:hover { background-color: #1d4ed8; }
+button:disabled { background-color: #94a3b8; cursor: not-allowed; transform: none; }
 
-/* Resultados */
+/* --- RESULTADOS --- */
 .hidden { display: none; }
-#result-section {
-    margin-top: 32px;
-    padding-top: 24px;
-    border-top: 1px solid #e2e8f0;
-}
-h2 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 16px;
-    color: #0f172a;
-}
+#result-section { margin-top: 32px; padding-top: 24px; border-top: 1px solid #e2e8f0; }
+h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; color: #0f172a; }
 
-/* Formatação da Análise da IA */
 .ai-content {
     background-color: #f8fafc;
     border-left: 4px solid #2563eb;
     padding: 20px;
-    border-radius: 0 8px 8px 0;
+    border-radius: 4px 8px 8px 4px;
     font-size: 0.95rem;
     line-height: 1.6;
     color: #334155;
+    word-wrap: break-word; /* Evita que palavras longas quebrem o layout */
 }
 .ai-content p { margin: 0 0 12px 0; }
 .ai-content ul { margin: 12px 0; padding-left: 20px; }
 .ai-content li { margin-bottom: 8px; }
 .ai-content strong { color: #1e40af; font-weight: 700; }
-.loading { color: #64748b; font-style: italic; text-align: center; }
+.loading { color: #64748b; font-style: italic; text-align: center; padding: 10px; }
+
+/* --- MEDIA QUERIES (RESPONSIVIDADE MÓVEL) --- */
+@media (max-width: 480px) {
+    body {
+        padding: 10px; /* Menos margem no corpo */
+    }
+
+    .container {
+        padding: 20px; /* Mais espaço interno para conteúdo */
+        border-radius: 12px;
+    }
+
+    h1 {
+        font-size: 1.3rem;
+    }
+
+    /* Ajuste para inputs não ficarem gigantes mas confortáveis */
+    input, select {
+        padding: 12px;
+    }
+    
+    /* Tooltips no mobile: Ajuste fino para não sair da tela */
+    .tooltip-content {
+        width: 200px;
+        font-size: 0.8rem;
+    }
+}
